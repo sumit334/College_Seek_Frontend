@@ -78,6 +78,7 @@ const Update=()=>{
             }
         }
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     useEffect(() => {
@@ -99,6 +100,7 @@ const Update=()=>{
         getImage();
         post.categories = location.search?.split('=')[1] || 'All';
         post.username = account.username;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [file, post.categories, location.search, account.username]);
 
 
