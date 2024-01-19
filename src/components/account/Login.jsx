@@ -166,7 +166,7 @@ const Login = ({ setUserAuthenticated }) => {
             if (response.isSuccess) {
                 setError('');
                 setSignup(signupInitialValues);
-                navigate('/');
+                toggleAccount('login');
             }
         } catch (error) {
             setError('Something went wrong! Please Try Again');
@@ -231,12 +231,6 @@ const Login = ({ setUserAuthenticated }) => {
                         <TextField
                             variant="standard"
                             onChange={(e) => onInputChange(e)}
-                            name="name"
-                            label="Enter Name"
-                        />
-                        <TextField
-                            variant="standard"
-                            onChange={(e) => onInputChange(e)}
                             name="username"
                             label="Enter Email ID"
                         />
@@ -256,6 +250,12 @@ const Login = ({ setUserAuthenticated }) => {
                                     </IconButton>
                                 ),
                             }}
+                        />
+                        <TextField
+                            variant="standard"
+                            onChange={(e) => onInputChange(e)}
+                            name="name"
+                            label="Enter Name"
                         />
                         <Button onClick={handleButtonClick}>Generate Password</Button>
 
