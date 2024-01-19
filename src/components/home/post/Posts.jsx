@@ -38,9 +38,16 @@ const Posts = () => {
                             <Post post={post} />
                         </Link>
                     </Grid>
-                )) : <Box style={{color: '878787', margin: '30px 80px', fontSize: 18}}>
-                        No data is available for selected category
-                    </Box>
+                )) : (
+                    <>
+                        <Box style={{color: 'red', margin: '15px 20px', fontSize: 18}}>
+                            No SEEK is Available for Selected Category
+                        </Box>
+                        <Box style={{color: 'green', margin: '60px -320px', fontSize: 18}}>
+                            Create SEEK To See
+                        </Box>
+                    </>
+                )
             }
         </>
     )

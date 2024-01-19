@@ -1,4 +1,3 @@
-
 import { styled, Box, Typography } from '@mui/material';
 import { addEllipsis } from '../../../utils/common-utils';
 
@@ -10,6 +9,13 @@ const Container = styled(Box)`
     align-items: center;
     flex-direction: column;
     height: 350px;
+    overflow: hidden; /* Ensure overflow is hidden to avoid issues with border-radius */
+    transition: transform 0.3s;
+
+    &:hover {
+        transform: scale(1.2); /* Adjust the scale value for the zoom effect */
+    }
+
     & > img, & > p {
         padding: 0 5px 5px 5px;
     }
@@ -19,18 +25,21 @@ const Image = styled('img')({
     width: '100%',
     objectFit: 'cover',
     borderRadius: '10px 10px 0 0',
-    height: 150
+    height: 150,
+    transition: 'transform 0.3s',
+    '&:hover': {
+        transform: 'scale(1.2);', /* Adjust the scale value for the zoom effect */
+    },
 });
 
 const Text = styled(Typography)`
-    color: #878787
+    color: #878787;
     font-size: 12px;
-    // font-weight: bold;
 `;
 
 const Heading = styled(Typography)`
     font-size: 18px;
-    font-weight: 600
+    font-weight: 600;
 `;
 
 const Details = styled(Typography)`
@@ -50,7 +59,7 @@ const Post = ({ post }) => {
             <Text>Author: {post.username}</Text>
             <Details>{addEllipsis(post.description, 100)}</Details>
         </Container>
-    )
-}
+    );
+};
 
 export default Post;

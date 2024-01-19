@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import { styled, Box, TextareaAutosize, Button, InputBase, FormControl  } from '@mui/material';
+import { styled, Box, TextareaAutosize, Button, InputBase, FormControl, Typography } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
 
 import { DataContext } from '../../context/DataProvider';
 import { API } from '../../service/api';
 
-
 const Container = styled(Box)(({ theme }) => ({
     margin: '50px 100px',
     [theme.breakpoints.down('md')]: {
-        margin: 0
-    }
+        margin: 0,
+    },
 }));
 
 const Image = styled('img')({
@@ -49,50 +48,51 @@ const initialPost = {
     picture: '',
     username: '',
     categories: '',
-    createdDate: new Date()
-}
+    createdDate: new Date(),
+};
 
-
-const Update=()=>{
-
+const Update = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const {id}=useParams();
+    const { id } = useParams();
 
-    const [post,setPost]=useState(initialPost);
-    const [file,setFile]=useState('');
+    const [post, setPost] = useState(initialPost);
+    const [file, setFile] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const {account}=useContext(DataContext);
+    const { account } = useContext(DataContext);
 
-    const url = post.picture ? post.picture : 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
-    
-    useEffect(()=>{
-        const fetchData=async()=>{
+    const url =
+        post.picture ||
+        'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
+
+    useEffect(() => {
+        const fetchData = async () => {
             try {
-                let response=await API.getPostById(id);
-                if(response.isSuccess){
+                let response = await API.getPostById(id);
+                if (response.isSuccess) {
                     setPost(response.data);
                 }
             } catch (error) {
-                console.error("Error while Editing the post",error);
+                console.error('Error while Editing the post', error);
             }
-        }
+        };
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    }, []);
 
     useEffect(() => {
         const getImage = async () => {
             if (file) {
                 const data = new FormData();
-                data.append("file", file);
+                data.append('file', file);
 
                 try {
                     const response = await API.uploadFile(data);
-                    // console.log("Cloudinary url from server: ",response.data.url);
-                    setPost(prevPost => ({ ...prevPost, picture: response.data.url }));
+                    setPost((prevPost) => ({ ...prevPost, picture: response.data.url }));
                 } catch (error) {
-                    console.error("Error occurred while uploading the image", error);
+                    console.error('Error occurred while uploading the image', error);
                 }
             }
         };
@@ -103,29 +103,35 @@ const Update=()=>{
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [file, location.search, account.username]);
 
-
     const handleImageClick = () => {
-        // Open the image URL in a new tab
         window.open(post.picture, '_blank');
     };
-    
+
     const updateBlogPost = async () => {
         try {
-            let response=await API.updatePost(post);
-            if(response.isSuccess){
+            if (!post.title || !post.description) {
+                setError('Title and description are required.');
+                return;
+            }
+
+            setLoading(true);
+            let response = await API.updatePost(post);
+            if (response.isSuccess) {
                 navigate(`/details/${id}`);
             }
         } catch (error) {
-            console.error("ERROR IN POSTING:: CreatePost",error.message);
+            console.error('ERROR IN POSTING:: Update', error.message);
+        } finally {
+            setLoading(false);
         }
-    }
+    };
 
     const handleChange = (e) => {
-        setPost(prevPost => ({ ...prevPost, [e.target.name]: e.target.value }));
-    }
-    
+        setPost((prevPost) => ({ ...prevPost, [e.target.name]: e.target.value }));
+        setError(null);
+    };
 
-    return(
+    return (
         <Container>
             <Image src={url} alt="post" onClick={handleImageClick} />
 
@@ -136,21 +142,35 @@ const Update=()=>{
                 <input
                     type="file"
                     id="fileInput"
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     onChange={(e) => setFile(e.target.files[0])}
                 />
-                <InputTextField value={post.title} onChange={(e) => handleChange(e)} name='title' placeholder="Title" />
-                <Button onClick={() => updateBlogPost()} variant="contained" color="primary">Update</Button>
+                <InputTextField
+                    value={post.title}
+                    onChange={(e) => handleChange(e)}
+                    name="title"
+                    placeholder="Title"
+                />
+                {loading ? (
+                    <Button variant="contained" color="primary" disabled>
+                        Updating...
+                    </Button>
+                ) : (
+                    <Button onClick={() => updateBlogPost()} variant="contained" color="primary">
+                        Update
+                    </Button>
+                )}
             </StyledFormControl>
+            {error && <Typography color="error">{error}</Typography>}
             <Textarea
                 minRows={5}
-                placeholder="Tell your story..."
-                name='description'
-                onChange={(e) => handleChange(e)} 
+                placeholder="Space you Seek..."
+                name="description"
+                onChange={(e) => handleChange(e)}
                 value={post.description}
             />
         </Container>
-    )
-}
+    );
+};
 
 export default Update;

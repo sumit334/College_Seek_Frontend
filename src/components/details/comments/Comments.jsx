@@ -2,9 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { Box, TextareaAutosize, Button, styled } from '@mui/material';
 
 import { DataContext } from '../../../context/DataProvider';
-
 import { API } from '../../../service/api';
-
 import Comment from './Comment';
 
 const Container = styled(Box)`
@@ -20,7 +18,7 @@ const Image = styled('img')({
 
 const StyledTextArea = styled(TextareaAutosize)`
     height: 100px !important;
-    width: 100%; 
+    width: 100%;
     margin: 0 20px;
 `;
 
@@ -28,15 +26,16 @@ const initialValue = {
     name: '',
     postId: '',
     date: new Date(),
-    comments: ''
-}
+    comments: '',
+};
 
 const Comments = ({ post }) => {
-    const url = 'https://static.thenounproject.com/png/12017-200.png' //dumy user image
+    const url = 'https://static.thenounproject.com/png/12017-200.png'; //dummy user image
 
     const [comment, setComment] = useState(initialValue);
     const [comments, setComments] = useState([]);
     const [toggle, setToggle] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const { account } = useContext(DataContext);
 
@@ -47,10 +46,10 @@ const Comments = ({ post }) => {
                 if (response.isSuccess) {
                     setComments(response.data);
                 }
-            } catch (error) {   
-                console.error("Error getting the comment data ",error);
+            } catch (error) {
+                console.error('Error getting the comment data ', error);
             }
-        }
+        };
         getData();
     }, [toggle, post]);
 
@@ -59,53 +58,62 @@ const Comments = ({ post }) => {
             ...comment,
             name: account.username,
             postId: post._id,
-            comments: e.target.value
+            comments: e.target.value,
         });
-    }
+    };
 
-    const addComment = async() => {
+    const addComment = async () => {
         try {
             if (!comment.comments.trim()) {
-                console.warn("Comment is empty. Not posting.");
+                console.warn('Comment is empty. Not Echoing.');
                 return;
             }
-            let response=await API.newComment(comment);
-            if(response.isSuccess){
-                setComment(initialValue)
+
+            setLoading(true); // Set loading state to true during posting
+            let response = await API.newComment(comment);
+
+            if (response.isSuccess) {
+                setComment(initialValue);
             }
-            setToggle(prevState => !prevState);
+
+            setToggle((prevState) => !prevState);
         } catch (error) {
-            console.error("Error on adding the comments ",error);
+            console.error('Error on adding the comments ', error);
+        } finally {
+            setLoading(false); // Set loading state back to false after posting attempt
         }
-    }
-    
+    };
+
     return (
         <Box>
             <Container>
-                <Image src={url} alt="dp" />   
-                <StyledTextArea 
-                    minRows={5} 
-                    placeholder="Want to say something?"
-                    onChange={(e) => handleChange(e)} 
+                <Image src={url} alt="dp" />
+                <StyledTextArea
+                    minRows={5}
+                    placeholder="Want to Echo something?"
+                    onChange={(e) => handleChange(e)}
                     value={comment.comments}
                 />
-                <Button 
-                    variant="contained" 
-                    color="primary" 
-                    size="medium" 
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="medium"
                     style={{ height: 40 }}
                     onClick={(e) => addComment(e)}
-                >Post</Button>             
+                    disabled={loading} // Disable button when posting to prevent multiple clicks
+                >
+                    {loading ? 'Echoing' : 'Echo'}
+                </Button>
             </Container>
             <Box>
-                {
-                    comments && comments.length > 0 && comments.map(comment => (
-                        <Comment key={comment._id} comment={comment} setToggle={setToggle} /> //TODO:Adding key for the map
-                    ))
-                }
+                {comments &&
+                    comments.length > 0 &&
+                    comments.map((comment) => (
+                        <Comment key={comment._id} comment={comment} setToggle={setToggle} />
+                    ))}
             </Box>
         </Box>
-    )
-}
+    );
+};
 
 export default Comments;

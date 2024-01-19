@@ -6,7 +6,7 @@ const API_URL="https://college-seek-backend.onrender.com"; //Backend URL
 
 const axiosInstance=axios.create({
     baseURL: API_URL,
-    timeout: 10000,
+    timeout: 15000,
     headers:{
         "Accept": "application/json, uform-data", 
         "Content-Type": "application/json"
