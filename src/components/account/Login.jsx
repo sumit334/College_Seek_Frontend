@@ -93,10 +93,10 @@ const Login = ({ setUserAuthenticated }) => {
     }, [login]);
 
     useEffect(() => {
+        setError('');
         setLogin(loginInitialValues);
         setSignup(signupInitialValues);
-        setError('');
-    }, [account]);
+    },[account]);
 
     const onValueChange = (e) => {
         setLogin({ ...login, [e.target.name]: e.target.value });
@@ -187,14 +187,14 @@ const Login = ({ setUserAuthenticated }) => {
                     <Wrapper>
                         <TextField
                             variant="standard"
-                            defaultValue={login.username}
+                            value={login.username}
                             onChange={(e) => onValueChange(e)}
                             name="username"
                             label="Enter Email ID"
                         />
                         <TextField
                             variant="standard"
-                            defaultValue={login.password}
+                            value={login.password}
                             onChange={(e) => onValueChange(e)}
                             name="password"
                             label="Enter Password"
@@ -217,12 +217,12 @@ const Login = ({ setUserAuthenticated }) => {
                                 Logging In
                             </Button>
                         ) : (
-                            <LoginButton variant="contained" onClick={loginUser}>
+                            <LoginButton variant="contained" onClick={() => loginUser()}>
                                 Login
                             </LoginButton>
                         )}
                         <Text style={{ textAlign: 'center' }}>OR</Text>
-                        <SignupButton onClick={toggleSignup} style={{ marginBottom: 50 }}>
+                        <SignupButton onClick={() => toggleSignup()} style={{ marginBottom: 50 }}>
                             Create an account
                         </SignupButton>
                     </Wrapper>
@@ -230,12 +230,14 @@ const Login = ({ setUserAuthenticated }) => {
                     <Wrapper>
                         <TextField
                             variant="standard"
+                            value={signup.username}
                             onChange={(e) => onInputChange(e)}
                             name="username"
                             label="Enter Email ID"
                         />
                         <TextField
                             variant="standard"
+                            value={signup.password}
                             onChange={(e) => onInputChange(e)}
                             name="password"
                             label="Enter Password"
@@ -253,6 +255,7 @@ const Login = ({ setUserAuthenticated }) => {
                         />
                         <TextField
                             variant="standard"
+                            value={signup.name}
                             onChange={(e) => onInputChange(e)}
                             name="name"
                             label="Enter Name"
@@ -263,10 +266,10 @@ const Login = ({ setUserAuthenticated }) => {
                         {loading ? (
                             <Button variant="contained">Signing Up</Button>
                         ) : (
-                            <SignupButton onClick={signupUser}>Signup</SignupButton>
+                            <SignupButton onClick={() => signupUser()}>Signup</SignupButton>
                         )}
                         <Text style={{ textAlign: 'center' }}>OR</Text>
-                        <LoginButton variant="contained" onClick={toggleSignup}>
+                        <LoginButton variant="contained" onClick={() => toggleSignup()}>
                             Already have an account
                         </LoginButton>
                     </Wrapper>
