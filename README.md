@@ -1,1 +1,1 @@
-Visit: https://sumitscollegeseek.netlify.app/login
+Visit: https://sumitscollegeseek.netlify.app/
