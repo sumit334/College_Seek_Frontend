@@ -9,6 +9,7 @@ import {
   DialogActions,
   Button,
 } from '@mui/material';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import { Delete, Edit } from '@mui/icons-material';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { API } from '../../service/api';
@@ -120,6 +121,10 @@ const DetailView = () => {
     window.open(post.picture, '_blank');
   };
 
+  const handleFileClick=()=>{
+    window.open(post.fileUp, '_blank');
+  }
+
   return (
     <Container>
       <Image src={post.picture || url} alt="post" onClick={handleImageClick} />
@@ -138,6 +143,9 @@ const DetailView = () => {
         <Link to={`/?username=${post.username}`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <Typography>
             Author: <span style={{ fontWeight: 600 }}>{post.username}</span>
+          </Typography>
+          <Typography>
+            Download File: <CloudDownloadIcon onClick={handleFileClick}/> 
           </Typography>
         </Link>
         <Typography style={{ marginLeft: 'auto' }}>{new Date(post.createdDate).toDateString()}</Typography>

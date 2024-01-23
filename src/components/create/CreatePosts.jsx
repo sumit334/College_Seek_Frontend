@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { styled, Box, TextareaAutosize, Button, InputBase, FormControl, Typography } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { DataContext } from '../../context/DataProvider';
 import { API } from '../../service/api';
 
@@ -28,9 +28,18 @@ const StyledFormControl = styled(FormControl)`
 
 const InputTextField = styled(InputBase)`
     flex: 1;
-    margin: 0 30px;
     font-size: 25px;
 `;
+
+const InputTextFieldFile = styled(InputBase)`
+    flex: 1;
+    margin: 0 30px;
+    font-size: 17px;
+`;
+
+const CloudUploadIconPoint=styled(CloudUploadIcon)`
+    cursor:pointer;
+`
 
 const Textarea = styled(TextareaAutosize)`
     width: 100%;
@@ -49,6 +58,7 @@ const initialPost = {
     username: '',
     categories: '',
     createdDate: new Date(),
+    fileUp: '',
 };
 
 const CreatePosts = () => {
@@ -91,6 +101,10 @@ const CreatePosts = () => {
         window.open(post.picture, '_blank');
     };
 
+    const handleCloudUploadIconClick = () => {
+        window.open('https://sumitsharevault.netlify.app/', '_blank');
+    };
+
     const savePost = async () => {
         try {
             if (!post.title || !post.description) {
@@ -120,12 +134,12 @@ const CreatePosts = () => {
             <Image src={url} alt="post" onClick={handleImageClick} />
             <StyledFormControl>
                 <label htmlFor="fileInput">
-                    <Add fontSize="large" color="action" />
+                    <Add fontSize="large" color="action" cursor="pointer" />
                 </label>
                 <input
                     type="file"
                     id="fileInput"
-                    style={{ display: 'none' }}
+                    style={{ display: 'none'}}
                     onChange={(e) => setFile(e.target.files[0])}
                 />
                 <InputTextField onChange={(e) => handleChange(e)} name="title" placeholder="Title" />
@@ -140,6 +154,10 @@ const CreatePosts = () => {
                 )}
             </StyledFormControl>
             {error && <Typography color="error">{error}</Typography>}
+            <StyledFormControl>
+                <CloudUploadIconPoint onClick={handleCloudUploadIconClick} fontSize="large" color="action" />
+                <InputTextFieldFile onChange={(e) => handleChange(e)} name="fileUp" placeholder="File Upload Link" />
+            </StyledFormControl>
             <Textarea minRows={5} placeholder="Space you Seek..." name="description" onChange={(e) => handleChange(e)} />
         </Container>
     );

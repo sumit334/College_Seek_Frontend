@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { styled, Box, TextareaAutosize, Button, InputBase, FormControl, Typography } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import { DataContext } from '../../context/DataProvider';
 import { API } from '../../service/api';
@@ -41,6 +42,16 @@ const Textarea = styled(TextareaAutosize)`
         outline: none;
     }
 `;
+
+const InputTextFieldFile = styled(InputBase)`
+    flex: 1;
+    margin: 0 30px;
+    font-size: 17px;
+`;
+
+const CloudUploadIconPoint=styled(CloudUploadIcon)`
+    cursor:pointer;
+`
 
 const initialPost = {
     title: '',
@@ -131,6 +142,10 @@ const Update = () => {
         setError(null);
     };
 
+    const handleCloudUploadIconClick = () => {
+        window.open('https://sumitsharevault.netlify.app/', '_blank');
+    };
+
     return (
         <Container>
             <Image src={url} alt="post" onClick={handleImageClick} />
@@ -162,6 +177,10 @@ const Update = () => {
                 )}
             </StyledFormControl>
             {error && <Typography color="error">{error}</Typography>}
+            <StyledFormControl>
+                <CloudUploadIconPoint onClick={handleCloudUploadIconClick} fontSize="large" color="action"/>
+                <InputTextFieldFile onChange={(e) => handleChange(e)} name="fileUp" placeholder="File Upload Link" value={post.fileUp} />
+            </StyledFormControl>
             <Textarea
                 minRows={5}
                 placeholder="Space you Seek..."
