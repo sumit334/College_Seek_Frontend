@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { Box, TextareaAutosize, Button, styled } from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
 
 import { DataContext } from '../../../context/DataProvider';
 import { API } from '../../../service/api';
@@ -101,6 +102,7 @@ const Comments = ({ post }) => {
                     style={{ height: 40 }}
                     onClick={(e) => addComment(e)}
                     disabled={loading} // Disable button when posting to prevent multiple clicks
+                    endIcon={<SendIcon />}
                 >
                     {loading ? 'Echoing' : 'Echo'}
                 </Button>

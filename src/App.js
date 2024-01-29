@@ -10,6 +10,7 @@ import DetailView from "./components/details/DetailView";
 import Update from "./components/create/Update";
 import About from "./components/about/About";
 import Contact from "./components/contact/Contact";
+import Errors from "./components/error/Errors";
 
 const PrivateRoute = ({ isUserAuthenticated, ...props }) => {
   const token = sessionStorage.getItem('accessToken');
@@ -56,6 +57,8 @@ function App() {
             <Route path='/contact' element={<PrivateRoute isUserAuthenticated={isUserAuthenticated} />} >
               <Route path='/contact' element={<Contact />} />
             </Route>
+
+            <Route path='/*' element={<Errors />}  />
           </Routes>
         </div>
       </BrowserRouter>
