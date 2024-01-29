@@ -160,7 +160,9 @@ const Header = () => {
             </Drawer>
           </>
         )}
-        <Image src={Logo} alt="Seek" />
+        <Link to="/">
+          <Image src={Logo} alt="Seek" />
+        </Link>
         {!isSmallScreen && (
           <>
             <Navigation>
