@@ -1,14 +1,15 @@
 
 import { Box, styled, Typography, Link } from '@mui/material';
+import Banner from '../banner/Banner';
 import { GitHub, Instagram, Email, Language } from '@mui/icons-material';
 
-const Banner = styled(Box)`
-    background-image: url(https://res.cloudinary.com/collegeseek/image/upload/v1706034008/bjbc31va9mwqildibprn.png);
-    width: 100%;
-    height: 50vh;
-    background-position: left 0px top -100px;
-    background-size: cover;
-`;
+// const Banner = styled(Box)`
+//     background-image: url(https://res.cloudinary.com/collegeseek/image/upload/v1706034008/bjbc31va9mwqildibprn.png);
+//     width: 100%;
+//     height: 50vh;
+//     background-position: left 0px top -100px;
+//     background-size: cover;
+// `;
 
 const Wrapper = styled(Box)`
     padding: 20px;

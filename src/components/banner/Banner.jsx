@@ -3,9 +3,11 @@ import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { styled, Box, Typography, IconButton } from '@mui/material';
 
 const images = [
-    'https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg',
-    'https://images.pexels.com/photos/7097/people-coffee-tea-meeting.jpg',
     'https://images.pexels.com/photos/2305442/pexels-photo-2305442.jpeg',
+    'https://images.pexels.com/photos/7097/people-coffee-tea-meeting.jpg',
+    'https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg',
+    'https://www.wallpapertip.com/wmimgs/23-236943_us-wallpaper-for-website.jpg',
+    'https://res.cloudinary.com/collegeseek/image/upload/v1706034008/bjbc31va9mwqildibprn.png',
 ];
 
 const Image = styled(Box)`
@@ -38,7 +40,7 @@ const Banner = () => {
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCurrentImageIndex(prevIndex => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-        }, 5000);
+        }, 3000);
 
         return () => clearInterval(intervalId);
     }, []);
